@@ -12,6 +12,6 @@ app.use(cors());
 
 // routes
 app.use('/tracks', trackRoutes);
-
-app.listen(3000);
-console.log('Server on port', 3000);
+const port = 3000;
+app.listen(process.env.PORT || port);
+console.log('Server on port', port);
