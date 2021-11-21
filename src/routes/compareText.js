@@ -3,7 +3,6 @@ const router = Router();
 
 const { compareText } = require('../controllers/compare.controller')
 
-//router.get("/:trackID", getCompare);
 
 router.post('/', compareText);
 

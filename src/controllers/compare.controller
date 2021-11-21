@@ -1,56 +1,44 @@
-const { ObjectID, GridFSBucket } = require("mongodb");
-const { getConnection } = require("../database");
 const stringSimilarity = require("string-similarity");
-
-const getCompare = (req, res) => {
-
-  
-}
 
 const compareText = (req, res) => {
  
-  console.log('req: ', req.body)
   const {textIngles, speechTextUser  } = req.body
-
+  let matches;
+  
   try {
 
-    const similarity = stringSimilarity.compareTwoStrings("sealed", "sealeddaads");
-    console.log('similarity - 1 ', similarity)
-
-    const matches = stringSimilarity.findBestMatch(textIngles, speechTextUser);
-
-    console.log('matches: ',matches.ratings[0].rating)
-    console.log('matches: ',matches.ratings[1].rating)
-    console.log('matches: ',matches.ratings[2].rating)
-
-    console.log('EXECUTOU SORT ',matches.ratings.sort(function(a, b){return b.rating - a.rating;}))
-    const result = matches.ratings.sort(function(a, b){return b.rating - a.rating;})[0];
-
-    console.log('result: ', result)
-
-    if (result.rating >= 0.9) {
-      return res.status(201).json({error: false, message: "Processado com sucesso", result: "Sucesso", porcentagem: result.rating });
-    } else {
-      return res.status(201).json({error: false, message: "Processado com sucesso", result: "Erro Similaridade", porcentagem: result.rating });
+    if (speechTextUser.length === 0) {
+      return res.status(201).json({error: false, message: "Processado com sucesso", result: "Erro Similaridade", porcentagem: '0' });
     }
 
+    if (speechTextUser.length === 1) {
+      matches = stringSimilarity.findBestMatch(textIngles, speechTextUser);
 
-    
+      if (matches.ratings[0].rating >= 0.9) {
+        return res.status(201).json({error: false, message: "Processado com sucesso", result: "Sucesso", porcentagem: matches.ratings[0].rating });
+      } else {
+        return res.status(201).json({error: false, message: "Processado com sucesso", result: "Erro Similaridade", porcentagem: matches.ratings[0].rating });
+      }
+
+    } else {
+      matches = stringSimilarity.findBestMatch(textIngles, speechTextUser);
+      const result = matches.ratings.sort(function(a, b){return b.rating - a.rating;})[0];
+
+      if (result.rating >= 0.9) {
+        return res.status(201).json({error: false, message: "Processado com sucesso", result: "Sucesso", porcentagem: result.rating });
+      } else {
+        return res.status(201).json({error: false, message: "Processado com sucesso", result: "Erro Similaridade", porcentagem: result.rating });
+      }
+
+    }
 
   } catch (error) {
 
     return res.status(404).json({ error: true,  message: "Ocorreu um erro interno, tente mais tarde!"});
   }
 
-
-
-
-   
-      
-    
 }
 
 module.exports = {
-  getCompare,
   compareText
 }
