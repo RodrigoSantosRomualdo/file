@@ -14,7 +14,7 @@ const compareText = (req, res) => {
     if (speechTextUser.length === 1) {
       matches = stringSimilarity.findBestMatch(textIngles.toLowerCase(), speechTextUser);
 
-      if (matches.ratings[0].rating >= 0.9) {
+      if (matches.ratings[0].rating >= 0.6) {
         return res.status(201).json({error: false, message: "Processado com sucesso", result: "Sucesso", porcentagem: matches.ratings[0].rating });
       } else {
         return res.status(201).json({error: false, message: "Processado com sucesso", result: "Erro Similaridade", porcentagem: matches.ratings[0].rating });
@@ -25,7 +25,7 @@ const compareText = (req, res) => {
       console.log('EXECUTOU O ELSE -> ', matches)
       //const result = matches.ratings.sort(function(a, b){return b.rating - a.rating;})[0];
       
-      if (matches?.bestMatch?.rating >= 0.87) {
+      if (matches?.bestMatch?.rating >= 0.6) {
         return res.status(201).json({error: false, message: "Processado com sucesso", result: "Sucesso", porcentagem: matches?.bestMatch?.rating });
       } else {
         return res.status(201).json({error: false, message: "Processado com sucesso", result: "Erro Similaridade", porcentagem: matches?.bestMatch?.rating });
