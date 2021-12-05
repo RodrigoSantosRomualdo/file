@@ -4,7 +4,7 @@ const compareText = (req, res) => {
  
   const {textIngles, speechTextUser  } = req.body
   let matches;
-  
+
   try {
 
     if (speechTextUser.length === 0) {
@@ -12,7 +12,7 @@ const compareText = (req, res) => {
     }
 
     if (speechTextUser.length === 1) {
-      matches = stringSimilarity.findBestMatch(textIngles, speechTextUser);
+      matches = stringSimilarity.findBestMatch(textIngles.toLowerCase(), speechTextUser);
 
       if (matches.ratings[0].rating >= 0.9) {
         return res.status(201).json({error: false, message: "Processado com sucesso", result: "Sucesso", porcentagem: matches.ratings[0].rating });
@@ -21,13 +21,14 @@ const compareText = (req, res) => {
       }
 
     } else {
-      matches = stringSimilarity.findBestMatch(textIngles, speechTextUser);
-      const result = matches.ratings.sort(function(a, b){return b.rating - a.rating;})[0];
-
-      if (result.rating >= 0.9) {
-        return res.status(201).json({error: false, message: "Processado com sucesso", result: "Sucesso", porcentagem: result.rating });
+      matches = stringSimilarity.findBestMatch(textIngles.toLowerCase(), speechTextUser);
+      console.log('EXECUTOU O ELSE -> ', matches)
+      //const result = matches.ratings.sort(function(a, b){return b.rating - a.rating;})[0];
+      
+      if (matches?.bestMatch?.rating >= 0.87) {
+        return res.status(201).json({error: false, message: "Processado com sucesso", result: "Sucesso", porcentagem: matches?.bestMatch?.rating });
       } else {
-        return res.status(201).json({error: false, message: "Processado com sucesso", result: "Erro Similaridade", porcentagem: result.rating });
+        return res.status(201).json({error: false, message: "Processado com sucesso", result: "Erro Similaridade", porcentagem: matches?.bestMatch?.rating });
       }
 
     }
