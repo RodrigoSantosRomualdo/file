@@ -1,7 +1,7 @@
 const stringSimilarity = require("string-similarity");
 
 const compareText = (req, res) => {
- 
+  if (process.env.padrao === req.body.padrao) {
   const {textIngles, speechTextUser  } = req.body
   let matches;
 
@@ -37,6 +37,11 @@ const compareText = (req, res) => {
 
     return res.status(404).json({ error: true,  message: "Ocorreu um erro interno, tente mais tarde!"});
   }
+
+} else {
+  res.send('Sem autorização')
+  res.status(401)
+}
 
 }
 

@@ -4,7 +4,7 @@ const { Readable } = require('stream');
 const multer = require('multer');
 
 const getTrack = (req, res) => {
-
+  if (process.env.padrao === req.body.padrao) {
   let trackID;
   try {
     trackID = new ObjectID(req.params.trackID);
@@ -33,9 +33,15 @@ const getTrack = (req, res) => {
   downloadStream.on('end', () => {
     res.end();
   });
+
+  } else {
+    res.send('Sem autorização')
+    res.status(401)
+  }
 }
 
 const uploadTrack = (req, res) => {
+  if (process.env.padrao === req.body.padrao) {
   const storage = multer.memoryStorage();
   const upload = multer({storage, limits: {
     fields: 1, // 1 non-file field
@@ -78,6 +84,11 @@ const uploadTrack = (req, res) => {
     });
 
   })
+
+  } else {
+    res.send('Sem autorização')
+    res.status(401)
+  }
 }
 
 module.exports = {
