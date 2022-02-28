@@ -4,7 +4,6 @@ const { Readable } = require('stream');
 const multer = require('multer');
 
 const getTrack = (req, res) => {
-  if (process.env.padrao === req.body.padrao) {
   let trackID;
   try {
     trackID = new ObjectID(req.params.trackID);
@@ -34,10 +33,7 @@ const getTrack = (req, res) => {
     res.end();
   });
 
-  } else {
-    res.send('Sem autorização')
-    res.status(401)
-  }
+
 }
 
 const uploadTrack = (req, res) => {
