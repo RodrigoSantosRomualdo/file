@@ -37,7 +37,7 @@ const getTrack = (req, res) => {
 }
 
 const uploadTrack = (req, res) => {
-  if (process.env.padrao === req.body.padrao) {
+  if (process.env.padrao === req.params.padrao) {
   const storage = multer.memoryStorage();
   const upload = multer({storage, limits: {
     fields: 1, // 1 non-file field
