@@ -76,7 +76,7 @@ const uploadTrack = (req, res) => {
     });
 
     uploadStream.on('finish', () => {
-      return res.status(201).json({ message: "File uploaded successfully, stored under Mongo ObjectID: " + id  }, { id: id });
+      return res.status(201).json({ message: id });
     });
 
   })
